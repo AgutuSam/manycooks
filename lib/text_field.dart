@@ -7,10 +7,10 @@ extension SmartTextStyle on SmartTextType {
     switch (this) {
       case SmartTextType.QUOTE:
         return TextStyle(
-            fontSize: 16.0, fontStyle: FontStyle.italic, color: Colors.white70);
+            fontSize: 16.0, fontStyle: FontStyle.italic, color: Colors.black87);
       case SmartTextType.H1:
         return TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold);
-        break;
+
       default:
         return TextStyle(fontSize: 16.0);
     }
@@ -20,7 +20,6 @@ extension SmartTextStyle on SmartTextType {
     switch (this) {
       case SmartTextType.H1:
         return EdgeInsets.fromLTRB(16, 24, 16, 8);
-        break;
       case SmartTextType.BULLET:
         return EdgeInsets.fromLTRB(24, 8, 16, 8);
       default:
@@ -32,7 +31,6 @@ extension SmartTextStyle on SmartTextType {
     switch (this) {
       case SmartTextType.QUOTE:
         return TextAlign.center;
-        break;
       default:
         return TextAlign.start;
     }
@@ -50,12 +48,12 @@ extension SmartTextStyle on SmartTextType {
 }
 
 class SmartTextField extends StatelessWidget {
-  const SmartTextField(this.type, this.controller, this.focusNode, {Key? key})
+  const SmartTextField({this.type, this.controller, this.focusNode, Key? key})
       : super(key: key);
 
-  final SmartTextType type;
-  final TextEditingController controller;
-  final FocusNode focusNode;
+  final type;
+  final controller;
+  final focusNode;
 
   @override
   Widget build(BuildContext context) {
