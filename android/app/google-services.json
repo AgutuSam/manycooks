@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "384433501041",
+    "project_id": "many-cooks",
+    "storage_bucket": "many-cooks.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:384433501041:android:56ef1f476a8fa530e7fcd0",
+        "android_client_info": {
+          "package_name": "com.example.manycooks"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "384433501041-3mu4hlvljdr77ooj3a9fb5cgapqq54kv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.manycooks",
+            "certificate_hash": "cb4a253446e3f090d4f3369c12b64c72a4f4e415"
+          }
+        },
+        {
+          "client_id": "384433501041-pqo4kn8j3oivd8i95r5s1l9s9j0qcll5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHcW64_rTgZkzuqyjRwUOmHnfby-Gn-Wg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "384433501041-pqo4kn8j3oivd8i95r5s1l9s9j0qcll5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
