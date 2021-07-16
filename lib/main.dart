@@ -1,12 +1,25 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:manycooks/text_editor.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:manycooks/auth/blocs/bookmark_bloc.dart';
+import 'package:manycooks/auth/blocs/data_bloc.dart';
+import 'package:manycooks/auth/blocs/internet_bloc.dart';
+import 'package:manycooks/auth/blocs/sign_in_bloc.dart';
+import 'package:manycooks/auth/blocs/userdata_bloc.dart';
+import 'package:manycooks/auth/signIn.dart';
+import 'package:manycooks/text/text_editor.dart';
+import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  await FlutterDownloader.initialize(debug: true);
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     Map<int, Color> color = {
@@ -22,15 +35,65 @@ class MyApp extends StatelessWidget {
       900: Color.fromRGBO(147, 196, 125, 1),
     };
     MaterialColor colorCustom = MaterialColor(0xFFF0B432, color);
-    return MaterialApp(
-      title: 'Many Cooks',
-      theme: ThemeData(
-        primarySwatch: colorCustom,
-        brightness: Brightness.dark,
-        fontFamily: 'Georgia',
-      ),
-      debugShowCheckedModeBanner: false,
-      home: TextEditor(),
-    );
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider<DataBloc>(
+            create: (context) => DataBloc(),
+          ),
+          ChangeNotifierProvider<SignInBloc>(
+            create: (context) => SignInBloc(),
+          ),
+          ChangeNotifierProvider<UserBloc>(
+            create: (context) => UserBloc(),
+          ),
+          ChangeNotifierProvider<BookmarkBloc>(
+            create: (context) => BookmarkBloc(),
+          ),
+          ChangeNotifierProvider<InternetBloc>(
+            create: (context) => InternetBloc(),
+          ),
+        ],
+        child: MaterialApp(
+            title: 'Many Cooks',
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              primarySwatch: colorCustom,
+              fontFamily: 'Georgia',
+              brightness: Brightness.dark,
+              appBarTheme: AppBarTheme(
+                brightness: Brightness.dark,
+                color: colorCustom.shade600,
+                textTheme: TextTheme(
+                    headline6: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontFamily: 'Georgia',
+                        fontWeight: FontWeight.w600)),
+                elevation: 0,
+                iconTheme: IconThemeData(
+                  color: Colors.black,
+                ),
+              ),
+              textTheme: TextTheme(
+                  headline6: TextStyle(
+                color: Colors.black,
+                fontFamily: 'Georgia',
+                fontWeight: FontWeight.w600,
+                fontSize: 18,
+              )),
+            ),
+            home: MyApp1()));
+  }
+}
+
+class MyApp1 extends StatelessWidget {
+  const MyApp1({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final sb = context.watch<SignInBloc>();
+    return sb.isSignedIn == false && sb.guestUser == false
+        ? SignInPage()
+        : TextEditor();
   }
 }

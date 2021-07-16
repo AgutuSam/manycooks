@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 
-enum SmartTextType { H1, T, QUOTE, BULLET }
+enum SmartTextType { H1, T, QUOTE, UNDERLINE, BULLET }
 
 extension SmartTextStyle on SmartTextType {
   TextStyle get textStyle {
     switch (this) {
       case SmartTextType.QUOTE:
         return TextStyle(
-            fontSize: 16.0, fontStyle: FontStyle.italic, color: Colors.black87);
+            fontSize: 12.0, fontStyle: FontStyle.italic, color: Colors.white70);
       case SmartTextType.H1:
-        return TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold);
+        return TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold);
+      case SmartTextType.UNDERLINE:
+        return TextStyle(decoration: TextDecoration.underline);
 
       default:
-        return TextStyle(fontSize: 16.0);
+        return TextStyle(fontSize: 12.0);
     }
   }
 
@@ -30,28 +32,30 @@ extension SmartTextStyle on SmartTextType {
   TextAlign get align {
     switch (this) {
       case SmartTextType.QUOTE:
+      case SmartTextType.UNDERLINE:
         return TextAlign.center;
       default:
-        return TextAlign.start;
+        return TextAlign.justify;
     }
   }
 
   String get prefix {
-    // return this == SmartTextType.BULLET ? '\u2022 ' : '';
-    switch (this) {
-      case SmartTextType.BULLET:
-        return '\u2022 ';
-      default:
-    }
-    throw ("some arbitrary bulleting error");
+    return this == SmartTextType.BULLET ? '\u2022 ' : '';
+    // switch (this) {
+    //   case SmartTextType.BULLET:
+    //     return '\u2022 ';
+    //   default:
+    // }
+    // throw ("some arbitrary bulleting error");
   }
 }
 
 class SmartTextField extends StatelessWidget {
-  const SmartTextField({this.type, this.controller, this.focusNode, Key? key})
+  const SmartTextField(
+      {required this.type, this.controller, this.focusNode, Key? key})
       : super(key: key);
 
-  final type;
+  final SmartTextType type;
   final controller;
   final focusNode;
 

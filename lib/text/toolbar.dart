@@ -32,6 +32,12 @@ class Toolbar extends StatelessWidget {
                         : Colors.black),
                 onPressed: () => onSelected(SmartTextType.QUOTE)),
             IconButton(
+                icon: Icon(CommunityMaterialIcons.format_underline,
+                    color: selectedType == SmartTextType.UNDERLINE
+                        ? Colors.teal
+                        : Colors.black),
+                onPressed: () => onSelected(SmartTextType.UNDERLINE)),
+            IconButton(
                 icon: Icon(CommunityMaterialIcons.format_list_bulleted,
                     color: selectedType == SmartTextType.BULLET
                         ? Colors.teal
