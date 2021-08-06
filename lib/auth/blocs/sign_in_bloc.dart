@@ -25,22 +25,23 @@ class SignInBloc extends ChangeNotifier {
   late bool _hasError = false;
   bool get hasError => _hasError;
 
-  late String _errorCode;
+  String _errorCode = '';
   String get errorCode => _errorCode;
 
-  late String _name;
+  String _name = '';
   String get name => _name;
 
-  late String _uid;
+  String _uid = '';
   String get uid => _uid;
 
-  late String _email;
+  String _email = '';
   String get email => _email;
 
-  late String _imageUrl;
+  String _imageUrl =
+      'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png';
   String get imageUrl => _imageUrl;
 
-  late String timestamp;
+  String timestamp = '';
 
   Future signInWithGoogle() async {
     // ignore: invalid_return_type_for_catch_error

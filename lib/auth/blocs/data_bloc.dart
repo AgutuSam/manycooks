@@ -2,19 +2,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class DataBloc extends ChangeNotifier {
-
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
-  
-  
+
   List _alldata = [];
   List get alldata => _alldata;
-
 
   List _categories = [];
   List get categories => _categories;
 
   getData() async {
-    QuerySnapshot snap = await firestore.collection('contents').orderBy('timestamp', descending: true).limit(100).get();
+    QuerySnapshot snap = await firestore
+        .collection('food')
+        .orderBy('timestamp', descending: true)
+        .limit(100)
+        .get();
     //  QuerySnapshot snap = await Firestore.instance.collection('contents')
     //  .where("timestamp", isLessThanOrEqualTo: ['timestamp'])
     //  .orderBy('timestamp', descending: true)
@@ -28,17 +29,13 @@ class DataBloc extends ChangeNotifier {
     notifyListeners();
   }
 
-
-  Future getCategories ()async{
+  Future getCategories() async {
     QuerySnapshot snap = await firestore.collection('categories').get();
     var x = snap.docs;
-    
+
     _categories.clear();
 
     x.forEach((f) => _categories.add(f));
     notifyListeners();
   }
-
-
- 
 }

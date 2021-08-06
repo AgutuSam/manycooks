@@ -23,20 +23,25 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  cached_network_image: ^2.3.3
+  carousel_slider: ^4.0.0
   cloud_firestore: ^2.3.0
   community_material_icon: ^5.9.55
   connectivity: ^3.0.6
   connectivity_for_web: ^0.4.0
   cupertino_icons: ^1.0.2
+  dots_indicator: ^2.0.0
   firebase_auth: ^2.0.0
   flutter_downloader: ^1.6.1
+  flutter_staggered_grid_view: ^0.4.0
   font_awesome_flutter: ^9.1.0
   google_sign_in: ^5.0.4
   intl: ^0.17.0
   keyboard_visibility: ^0.5.6
   provider: ^5.0.0
-  rounded_loading_button: ^2.0.5
+  rounded_loading_button: ^1.0.15
   shared_preferences: ^2.0.6
+  shimmer: ^1.1.2
 
 dev_dependencies:
   flutter_test:
@@ -45,12 +50,10 @@ dev_dependencies:
   flutter_launcher_icons: ^0.8.0
   flutter_native_splash: ^0.3.2
 
-
 flutter_icons:
-  android: "launcher_icon" 
+  android: "launcher_icon"
   ios: true
   image_path: "assets/images/icon.png"
-
 
 flutter_native_splash:
   image: assets/images/splash.png

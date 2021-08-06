@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:manycooks/text/text_editor.dart';
 import 'package:provider/provider.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'blocs/internet_bloc.dart';
 import 'blocs/sign_in_bloc.dart';
@@ -92,15 +93,15 @@ class _SignInPageState extends State<SignInPage> {
         backgroundColor: Colors.white,
         appBar: AppBar(
           automaticallyImplyLeading: true,
-          actions: [
-            widget.closeDialog == null || widget.closeDialog == false
-                ? TextButton(
-                    onPressed: () {
-                      handleGuestUser();
-                    },
-                    child: Text('Skip'))
-                : Container()
-          ],
+          // actions: [
+          // widget.closeDialog == null || widget.closeDialog == false
+          //     ? TextButton(
+          //         onPressed: () {
+          //           handleGuestUser();
+          //         },
+          //         child: Text('Skip'))
+          //     : Container()
+          // ],
         ),
         body: SafeArea(
           child: Padding(

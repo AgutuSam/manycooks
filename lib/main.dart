@@ -7,7 +7,7 @@ import 'package:manycooks/auth/blocs/internet_bloc.dart';
 import 'package:manycooks/auth/blocs/sign_in_bloc.dart';
 import 'package:manycooks/auth/blocs/userdata_bloc.dart';
 import 'package:manycooks/auth/signIn.dart';
-import 'package:manycooks/text/text_editor.dart';
+import 'package:manycooks/kitchen/kitchen_home.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -62,7 +62,7 @@ class MyApp extends StatelessWidget {
               brightness: Brightness.dark,
               appBarTheme: AppBarTheme(
                 brightness: Brightness.dark,
-                color: colorCustom.shade600,
+                color: colorCustom.shade300,
                 textTheme: TextTheme(
                     headline6: TextStyle(
                         color: Colors.black,
@@ -94,6 +94,6 @@ class MyApp1 extends StatelessWidget {
     final sb = context.watch<SignInBloc>();
     return sb.isSignedIn == false && sb.guestUser == false
         ? SignInPage()
-        : TextEditor();
+        : KitchenHomePage();
   }
 }

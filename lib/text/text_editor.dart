@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:keyboard_visibility/keyboard_visibility.dart';
-import 'package:manycooks/auth/models/config.dart';
 import 'package:provider/provider.dart';
 
 import '../state_manager.dart';
@@ -46,7 +45,7 @@ class _TextEditorState extends State<TextEditor> {
             child: Scaffold(
                 appBar: AppBar(
                   title: Text(
-                    Config().appName,
+                    'Broth',
                     style: TextStyle(fontStyle: FontStyle.italic),
                   ),
                   centerTitle: true,
