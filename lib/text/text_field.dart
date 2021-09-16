@@ -3,19 +3,21 @@ import 'package:flutter/material.dart';
 enum SmartTextType { H1, T, QUOTE, UNDERLINE, BULLET }
 
 extension SmartTextStyle on SmartTextType {
-  TextStyle get textStyle {
-    switch (this) {
-      case SmartTextType.QUOTE:
-        return TextStyle(
-            fontSize: 12.0, fontStyle: FontStyle.italic, color: Colors.white70);
-      case SmartTextType.H1:
-        return TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold);
-      case SmartTextType.UNDERLINE:
-        return TextStyle(decoration: TextDecoration.underline);
+  static TextStyle? mystyle;
 
-      default:
-        return TextStyle(fontSize: 12.0);
-    }
+  void set textStyle(var style) {
+    style == SmartTextType.QUOTE
+        ? mystyle = TextStyle(
+            fontSize: 12.0, fontStyle: FontStyle.italic, color: Colors.white70)
+        : style == SmartTextType.H1
+            ? mystyle = TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)
+            : style == SmartTextType.UNDERLINE
+                ? mystyle = TextStyle(decoration: TextDecoration.underline)
+                : mystyle = TextStyle(fontSize: 12.0);
+  }
+
+  TextStyle get textStyle {
+    return mystyle ?? TextStyle(fontSize: 12.0);
   }
 
   EdgeInsets get padding {

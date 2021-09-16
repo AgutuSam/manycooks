@@ -8,6 +8,7 @@ import 'package:manycooks/auth/blocs/sign_in_bloc.dart';
 import 'package:manycooks/auth/blocs/userdata_bloc.dart';
 import 'package:manycooks/auth/signIn.dart';
 import 'package:manycooks/kitchen/kitchen_home.dart';
+import 'package:manycooks/state_manager.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -52,13 +53,16 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider<InternetBloc>(
             create: (context) => InternetBloc(),
           ),
+          ChangeNotifierProvider<EditorProvider>(
+            create: (context) => EditorProvider(),
+          ),
         ],
         child: MaterialApp(
             title: 'Many Cooks',
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
               primarySwatch: colorCustom,
-              fontFamily: 'Georgia',
+              fontFamily: 'Nunito',
               brightness: Brightness.dark,
               appBarTheme: AppBarTheme(
                 brightness: Brightness.dark,
@@ -67,7 +71,7 @@ class MyApp extends StatelessWidget {
                     headline6: TextStyle(
                         color: Colors.black,
                         fontSize: 18,
-                        fontFamily: 'Georgia',
+                        fontFamily: 'Nunito',
                         fontWeight: FontWeight.w600)),
                 elevation: 0,
                 iconTheme: IconThemeData(
@@ -77,7 +81,7 @@ class MyApp extends StatelessWidget {
               textTheme: TextTheme(
                   headline6: TextStyle(
                 color: Colors.black,
-                fontFamily: 'Georgia',
+                fontFamily: 'Nunito',
                 fontWeight: FontWeight.w600,
                 fontSize: 18,
               )),
