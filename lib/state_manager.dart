@@ -12,6 +12,18 @@ class EditorProvider extends ChangeNotifier {
     insert(index: 0);
   }
 
+set theTypes(List<SmartTextType> types) {
+    _types = types;
+  }
+
+  set theText(List<TextEditingController> text) {
+    _text = text;
+  }
+
+  set theNodes(List<FocusNode> nodes) {
+    _nodes = nodes;
+  }
+
   int get length => _text.length;
   int get focus => _nodes.indexWhere((node) => node.hasFocus);
   FocusNode nodeAt(int index) => _nodes.elementAt(index);

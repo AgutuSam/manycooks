@@ -20,32 +20,32 @@ class TextEditor extends StatefulWidget {
 class _TextEditorState extends State<TextEditor> {
   bool showToolbar = true;
 
-  var initVals = [
+  static List<Map> initVals = [
     {
       'Key': 0,
       'Text': 'These Nights',
-      'Style': '${SmartTextType.UNDERLINE}',
+      'Style': SmartTextType.UNDERLINE,
       'Node':
           'FocusNode#3e301(context: EditableText-[LabeledGlobalKey<EditableTextState>#eae28])'
     },
     {
       'Key': 1,
       'Text': 'Grey leaves',
-      'Style': '${SmartTextType.BULLET}',
+      'Style': SmartTextType.BULLET,
       'Node':
           'FocusNode#010d8(context:EditableText-[LabeledGlobalKey<EditableTextState>#9b442])'
     },
     {
       'Key': 2,
       'Text': '​Green skies',
-      'Style': '${SmartTextType.BULLET}',
+      'Style': SmartTextType.BULLET,
       'Node':
           'FocusNode#6666c(context:EditableText-[LabeledGlobalKey<EditableTextState>#a1bbf])'
     },
     {
       'Key': 3,
       'Text': '​Blue nights',
-      'Style': '${SmartTextType.BULLET}',
+      'Style': SmartTextType.BULLET,
       'Node':
           'FocusNode#38c79(context:EditableText-[LabeledGlobalKey<EditableTextState>#1a01a])'
     },
@@ -53,14 +53,14 @@ class _TextEditorState extends State<TextEditor> {
       'Key': 4,
       'Text':
           'I have been here the whole time and I will be there at the same place as last week.',
-      "Style": '${SmartTextType.QUOTE}',
+      "Style": SmartTextType.QUOTE,
       'Node':
           ' FocusNode#14e9d([PRIMARY FOCUS])(context: EditableText-[LabeledGlobalKey<EditableTextState>#267ce], PRIMARY FOCUS)'
     },
     {
       'Key': 5,
       'Text': 'Turn me right!',
-      'Style': '${SmartTextType.T}',
+      'Style': SmartTextType.T,
       'Node':
           'FocusNode#b7c32(context:EditableText-[LabeledGlobalKey<EditableTextState>#2557a])'
     }
@@ -70,12 +70,16 @@ class _TextEditorState extends State<TextEditor> {
     await Future.delayed(Duration(milliseconds: 200));
     EditorProvider editorProvider =
         Provider.of<EditorProvider>(context, listen: false);
-    for (var val in initVals) {
-      editorProvider.textAt(int.parse(val.values.first.toString())).text =
-          val['Text'].toString();
-      editorProvider.typeAt(int.parse(val.values.first.toString())).textStyle =
-          val['Style'];
-    }
+
+    editorProvider.theText = initVals.asMap().entries.map((val) {
+      TextEditingController myEditor = val.value['Text'];
+      return myEditor;
+    }).toList();
+    editorProvider.theTypes = initVals.asMap().entries.map((val) {
+      SmartTextType myStyle = val.value['Style'];
+      return myStyle;
+    }).toList();
+    // editorProvider.theNodes = [];
   }
 
   @override
