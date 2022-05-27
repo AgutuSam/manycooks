@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:intl/intl.dart';
 import 'package:manycooks/auth/models/config.dart';
 import 'package:manycooks/widgets/cached_image.dart';
 
@@ -14,6 +15,7 @@ class MyTags extends StatefulWidget {
 
 class _MyTagsState extends State<MyTags> with AutomaticKeepAliveClientMixin {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  var f = NumberFormat.compact(locale: "en_IN");
 
   late ScrollController controller;
   // late DocumentSnapshot _lastVisible;
@@ -103,12 +105,14 @@ class _MyTagsState extends State<MyTags> with AutomaticKeepAliveClientMixin {
               itemBuilder: (BuildContext context, int index) {
                 if (index < _data.length) {
                   final DocumentSnapshot d = _data[index];
+                  var categories =
+                      d['categories'].entries.map((v) => v.value).toList();
                   return InkWell(
                     child: Stack(
                       children: <Widget>[
                         Hero(
                             tag: 'popular$index',
-                            child: cachedImage(d['image url'])),
+                            child: cachedImage(d['cover'])),
                         Positioned(
                           bottom: 30,
                           left: 10,
@@ -116,12 +120,19 @@ class _MyTagsState extends State<MyTags> with AutomaticKeepAliveClientMixin {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                Config().hashTag,
+                                '#' + d['ownerName'],
                                 style: TextStyle(
-                                    color: Colors.white, fontSize: 14),
+                                    decoration: TextDecoration.none,
+                                    background: Paint()
+                                      ..strokeWidth = 8.0
+                                      ..color = Colors.black.withOpacity(0.5)
+                                      ..style = PaintingStyle.fill
+                                      ..strokeJoin = StrokeJoin.round,
+                                    fontSize: 14),
                               ),
                               Text(
-                                d['category'],
+                                // d['category'],
+                                categories.first,
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 18),
                               )
@@ -137,7 +148,7 @@ class _MyTagsState extends State<MyTags> with AutomaticKeepAliveClientMixin {
                                   color: Colors.white.withOpacity(0.5),
                                   size: 25),
                               Text(
-                                d['loves'].toString(),
+                                f.format(d['loves']).toString(),
                                 style: TextStyle(
                                     color: Colors.white.withOpacity(0.7),
                                     fontSize: 16,

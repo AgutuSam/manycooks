@@ -1,4 +1,7 @@
 // ignore: import_of_legacy_library_into_null_safe
+import 'dart:math';
+import 'package:intl/intl.dart';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
@@ -25,8 +28,10 @@ class KitchenHomePage extends StatefulWidget {
 }
 
 class _KitchenHomePageState extends State<KitchenHomePage> {
+  final rand = Random();
   int listIndex = 0;
   var _scaffoldKey = new GlobalKey<ScaffoldState>();
+  var f = NumberFormat.compact(locale: "en_IN");
 
   Future getData() async {
     Future.delayed(Duration(milliseconds: 0)).then((f) {
@@ -133,118 +138,230 @@ class _KitchenHomePageState extends State<KitchenHomePage> {
                                 .take(1)
                                 .map((f) => LoadingWidget())
                                 .toList()
-                            : db.alldata.map((i) {
+                            : db.alldata.map((res) {
+                                var i = res.data();
+                                var categories = i['categories']
+                                    .entries
+                                    .map((v) => v.value)
+                                    .toList();
                                 return Builder(
                                   builder: (BuildContext context) {
                                     return Container(
                                         width:
-                                            MediaQuery.of(context).size.width,
+                                            MediaQuery.of(context).size.width *
+                                                0.9,
                                         margin:
                                             EdgeInsets.symmetric(horizontal: 0),
                                         child: InkWell(
-                                          child: CachedNetworkImage(
-                                            imageUrl: i['image url'],
-                                            imageBuilder:
-                                                (context, imageProvider) =>
-                                                    Hero(
-                                              tag: i['timestamp'],
-                                              child: Container(
-                                                margin: EdgeInsets.only(
-                                                    left: 10,
-                                                    right: 10,
-                                                    top: 10,
-                                                    bottom: 50),
-                                                decoration: BoxDecoration(
-                                                    color: Colors.grey[200],
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20),
-                                                    boxShadow: <BoxShadow>[
-                                                      BoxShadow(
-                                                          color: Colors.black45,
-                                                          blurRadius: 20,
-                                                          offset: Offset(5, 30))
-                                                    ],
-                                                    image: DecorationImage(
-                                                        image: imageProvider,
-                                                        fit: BoxFit.cover)),
-                                                child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 30,
-                                                            bottom: 40),
-                                                    child: Row(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .end,
-                                                      children: <Widget>[
-                                                        Column(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .end,
+                                          child: Stack(
+                                            children: [
+                                              CachedNetworkImage(
+                                                imageUrl: i['cover'],
+                                                imageBuilder:
+                                                    (context, imageProvider) =>
+                                                        Hero(
+                                                  tag: i['timestamp'],
+                                                  child: Container(
+                                                    margin: EdgeInsets.only(
+                                                        left: 10,
+                                                        right: 10,
+                                                        top: 10,
+                                                        bottom: 50),
+                                                    decoration: BoxDecoration(
+                                                        color: Colors.grey[200],
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(20),
+                                                        boxShadow: <BoxShadow>[
+                                                          BoxShadow(
+                                                              color: Colors
+                                                                  .black45,
+                                                              blurRadius: 20,
+                                                              offset:
+                                                                  Offset(5, 30))
+                                                        ],
+                                                        image: DecorationImage(
+                                                            image:
+                                                                imageProvider,
+                                                            fit: BoxFit.cover)),
+                                                    child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                left: 10,
+                                                                bottom: 20),
+                                                        child: Row(
                                                           crossAxisAlignment:
                                                               CrossAxisAlignment
-                                                                  .start,
+                                                                  .end,
                                                           children: <Widget>[
-                                                            Text(
-                                                              Config().hashTag,
-                                                              style: TextStyle(
-                                                                  decoration:
-                                                                      TextDecoration
-                                                                          .none,
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontSize: 14),
+                                                            Expanded(
+                                                              flex: 9,
+                                                              child: Column(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .end,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: <
+                                                                    Widget>[
+                                                                  Text(
+                                                                    '#' +
+                                                                        i['ownerName'],
+                                                                    style: TextStyle(
+                                                                        decoration: TextDecoration.none,
+                                                                        background: Paint()
+                                                                          ..strokeWidth =
+                                                                              8.0
+                                                                          ..color = Colors
+                                                                              .black
+                                                                              .withOpacity(0.5)
+                                                                          ..style =
+                                                                              PaintingStyle.fill
+                                                                          ..strokeJoin = StrokeJoin.round,
+                                                                        fontSize: 14),
+                                                                  ),
+                                                                  Container(
+                                                                    constraints:
+                                                                        BoxConstraints(
+                                                                      maxHeight:
+                                                                          95.0,
+                                                                    ),
+                                                                    child: Wrap(
+                                                                      clipBehavior:
+                                                                          Clip.antiAliasWithSaveLayer,
+                                                                      children: List<
+                                                                              Widget>.generate(
+                                                                          categories
+                                                                              .length,
+                                                                          (int
+                                                                              index) {
+                                                                        return Transform(
+                                                                          transform: new Matrix4
+                                                                              .identity()
+                                                                            ..scale(0.8),
+                                                                          child:
+                                                                              Chip(
+                                                                            elevation:
+                                                                                6.0,
+                                                                            padding:
+                                                                                EdgeInsets.symmetric(vertical: 2, horizontal: 2),
+                                                                            shape:
+                                                                                StadiumBorder(
+                                                                              side: BorderSide(
+                                                                                  color: Color.fromARGB(
+                                                                                    rand.nextInt(150),
+                                                                                    rand.nextInt(255),
+                                                                                    rand.nextInt(255),
+                                                                                    rand.nextInt(255),
+                                                                                  ),
+                                                                                  style: BorderStyle.solid,
+                                                                                  width: 1.2),
+                                                                            ),
+                                                                            backgroundColor:
+                                                                                Colors.white,
+                                                                            label:
+                                                                                Text(
+                                                                              categories[index],
+                                                                              style: TextStyle(fontSize: 18.0, color: Colors.black45, letterSpacing: 2.0, fontWeight: FontWeight.w300),
+                                                                            ),
+                                                                          ),
+                                                                        );
+                                                                      }),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
                                                             ),
-                                                            Text(
-                                                              i['category'],
-                                                              style: TextStyle(
-                                                                  decoration:
-                                                                      TextDecoration
-                                                                          .none,
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontSize: 25),
-                                                            )
                                                           ],
-                                                        ),
-                                                        Spacer(),
+                                                        )),
+                                                  ),
+                                                ),
+                                                placeholder: (context, url) =>
+                                                    LoadingWidget(),
+                                                errorWidget:
+                                                    (context, url, error) =>
                                                         Icon(
-                                                          Icons.favorite,
-                                                          size: 25,
-                                                          color: Colors.white
-                                                              .withOpacity(0.5),
-                                                        ),
-                                                        SizedBox(width: 2),
-                                                        Text(
-                                                          i['loves'].toString(),
-                                                          style: TextStyle(
-                                                              decoration:
-                                                                  TextDecoration
-                                                                      .none,
-                                                              color: Colors
-                                                                  .white
-                                                                  .withOpacity(
-                                                                      0.7),
-                                                              fontSize: 18,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600),
-                                                        ),
-                                                        SizedBox(
-                                                          width: 15,
-                                                        )
-                                                      ],
-                                                    )),
+                                                  Icons.error,
+                                                  size: 40,
+                                                ),
                                               ),
-                                            ),
-                                            placeholder: (context, url) =>
-                                                LoadingWidget(),
-                                            errorWidget:
-                                                (context, url, error) => Icon(
-                                              Icons.error,
-                                              size: 40,
-                                            ),
+                                              //  Container(
+                                              //   height: h * 0.70,
+                                              //   width: MediaQuery.of(context)
+                                              //           .size
+                                              //           .width *
+                                              //       0.9,
+                                              //   margin: EdgeInsets.symmetric(
+                                              //       horizontal: 0),
+                                              //   color: Colors.black
+                                              //       .withOpacity(0.5),
+                                              // ),
+                                              Positioned(
+                                                right: 30,
+                                                top: 20,
+                                                child: Row(
+                                                  children: [
+                                                    Icon(Icons.favorite,
+                                                        color: Colors.white,
+                                                        size: 25),
+                                                    Text(
+                                                      f
+                                                          .format(i['loves'])
+                                                          .toString(),
+                                                      style: TextStyle(
+                                                          color: Colors.white
+                                                              .withOpacity(0.7),
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                              FontWeight.w600),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Positioned(
+                                                right: 30,
+                                                top: 20,
+                                                child: Row(
+                                                  children: [
+                                                    Icon(Icons.favorite,
+                                                        color: Colors.white,
+                                                        size: 25),
+                                                    Text(
+                                                      f
+                                                          .format(i['loves'])
+                                                          .toString(),
+                                                      style: TextStyle(
+                                                          color: Colors.white
+                                                              .withOpacity(0.7),
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                              FontWeight.w600),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Positioned(
+                                                top: 50,
+                                                left: w * 0.05,
+                                                width: w * 0.8,
+                                                child: Container(
+                                                  constraints: BoxConstraints(
+                                                    maxWidth: w,
+                                                  ),
+                                                  child: Text(
+                                                    i['name'].toUpperCase(),
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 25,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                           onTap: () {},
                                         ));
@@ -252,17 +369,17 @@ class _KitchenHomePageState extends State<KitchenHomePage> {
                                 );
                               }).toList(),
                       ),
-                      Positioned(
-                        top: 40,
-                        left: w * 0.23,
-                        child: Text(
-                          'BROTH OF THE DAY',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
+                      // Positioned(
+                      //   top: 40,
+                      //   left: w * 0.23,
+                      //   child: Text(
+                      //     'BROTH OF THE DAY',
+                      //     style: TextStyle(
+                      //         color: Colors.white,
+                      //         fontSize: 25,
+                      //         fontWeight: FontWeight.bold),
+                      //   ),
+                      // ),
                       Positioned(
                         bottom: 5,
                         left: w * 0.34,
