@@ -14,8 +14,8 @@ import 'package:manycooks/auth/models/config.dart';
 import 'package:manycooks/auth/utils/dialog.dart';
 import 'package:manycooks/kitchen/allTags.dart';
 import 'package:manycooks/kitchen/myTags.dart';
+import 'package:manycooks/kitchen/nouvelle.dart';
 import 'package:manycooks/pages/internet.dart';
-import 'package:manycooks/text/text_editor.dart';
 import 'package:manycooks/widgets/drawer.dart';
 import 'package:manycooks/widgets/loading_animation.dart';
 import 'package:provider/provider.dart';
@@ -425,7 +425,7 @@ class _KitchenHomePageState extends State<KitchenHomePage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => TextEditor()));
+                                    builder: (context) => Nouvelle()));
                           },
                         ),
                         IconButton(

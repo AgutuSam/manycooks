@@ -23,7 +23,7 @@ class DataBloc extends ChangeNotifier {
     List x = snap.docs;
     x.shuffle();
     _alldata.clear();
-    x.take(5).forEach((f) {
+    x.take(x.length > 5 ? 5 : x.length).forEach((f) {
       _alldata.add(f);
     });
     notifyListeners();
