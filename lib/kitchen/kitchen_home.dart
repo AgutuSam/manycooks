@@ -15,6 +15,7 @@ import 'package:manycooks/auth/utils/dialog.dart';
 import 'package:manycooks/kitchen/allTags.dart';
 import 'package:manycooks/kitchen/myTags.dart';
 import 'package:manycooks/kitchen/nouvelle.dart';
+import 'package:manycooks/kitchen/recipe.dart';
 import 'package:manycooks/pages/internet.dart';
 import 'package:manycooks/widgets/drawer.dart';
 import 'package:manycooks/widgets/loading_animation.dart';
@@ -140,6 +141,7 @@ class _KitchenHomePageState extends State<KitchenHomePage> {
                                 .toList()
                             : db.alldata.map((res) {
                                 var i = res.data();
+                                var id = res.id;
                                 var categories = i['categories']
                                     .entries
                                     .map((v) => v.value)
@@ -147,224 +149,242 @@ class _KitchenHomePageState extends State<KitchenHomePage> {
                                 return Builder(
                                   builder: (BuildContext context) {
                                     return Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.9,
-                                        margin:
-                                            EdgeInsets.symmetric(horizontal: 0),
-                                        child: InkWell(
-                                          child: Stack(
-                                            children: [
-                                              CachedNetworkImage(
-                                                imageUrl: i['cover'],
-                                                imageBuilder:
-                                                    (context, imageProvider) =>
-                                                        Hero(
-                                                  tag: i['timestamp'],
-                                                  child: Container(
-                                                    margin: EdgeInsets.only(
-                                                        left: 10,
-                                                        right: 10,
-                                                        top: 10,
-                                                        bottom: 50),
-                                                    decoration: BoxDecoration(
-                                                        color: Colors.grey[200],
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(20),
-                                                        boxShadow: <BoxShadow>[
-                                                          BoxShadow(
-                                                              color: Colors
-                                                                  .black45,
-                                                              blurRadius: 20,
-                                                              offset:
-                                                                  Offset(5, 30))
-                                                        ],
-                                                        image: DecorationImage(
-                                                            image:
-                                                                imageProvider,
-                                                            fit: BoxFit.cover)),
-                                                    child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                left: 10,
-                                                                bottom: 20),
-                                                        child: Row(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .end,
-                                                          children: <Widget>[
-                                                            Expanded(
-                                                              flex: 9,
-                                                              child: Column(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .end,
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                children: <
-                                                                    Widget>[
-                                                                  Text(
-                                                                    '#' +
-                                                                        i['ownerName'],
-                                                                    style: TextStyle(
-                                                                        decoration: TextDecoration.none,
-                                                                        background: Paint()
-                                                                          ..strokeWidth =
-                                                                              8.0
-                                                                          ..color = Colors
-                                                                              .black
-                                                                              .withOpacity(0.5)
-                                                                          ..style =
-                                                                              PaintingStyle.fill
-                                                                          ..strokeJoin = StrokeJoin.round,
-                                                                        fontSize: 14),
-                                                                  ),
-                                                                  Container(
-                                                                    constraints:
-                                                                        BoxConstraints(
-                                                                      maxHeight:
-                                                                          95.0,
-                                                                    ),
-                                                                    child: Wrap(
-                                                                      clipBehavior:
-                                                                          Clip.antiAliasWithSaveLayer,
-                                                                      children: List<
-                                                                              Widget>.generate(
-                                                                          categories
-                                                                              .length,
-                                                                          (int
-                                                                              index) {
-                                                                        return Transform(
-                                                                          transform: new Matrix4
-                                                                              .identity()
-                                                                            ..scale(0.8),
-                                                                          child:
-                                                                              Chip(
-                                                                            elevation:
-                                                                                6.0,
-                                                                            padding:
-                                                                                EdgeInsets.symmetric(vertical: 2, horizontal: 2),
-                                                                            shape:
-                                                                                StadiumBorder(
-                                                                              side: BorderSide(
-                                                                                  color: Color.fromARGB(
-                                                                                    rand.nextInt(150),
-                                                                                    rand.nextInt(255),
-                                                                                    rand.nextInt(255),
-                                                                                    rand.nextInt(255),
-                                                                                  ),
-                                                                                  style: BorderStyle.solid,
-                                                                                  width: 1.2),
-                                                                            ),
-                                                                            backgroundColor:
-                                                                                Colors.white,
-                                                                            label:
-                                                                                Text(
-                                                                              categories[index],
-                                                                              style: TextStyle(fontSize: 18.0, color: Colors.black45, letterSpacing: 2.0, fontWeight: FontWeight.w300),
-                                                                            ),
-                                                                          ),
-                                                                        );
-                                                                      }),
-                                                                    ),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        )),
-                                                  ),
-                                                ),
-                                                placeholder: (context, url) =>
-                                                    LoadingWidget(),
-                                                errorWidget:
-                                                    (context, url, error) =>
-                                                        Icon(
-                                                  Icons.error,
-                                                  size: 40,
-                                                ),
-                                              ),
-                                              //  Container(
-                                              //   height: h * 0.70,
-                                              //   width: MediaQuery.of(context)
-                                              //           .size
-                                              //           .width *
-                                              //       0.9,
-                                              //   margin: EdgeInsets.symmetric(
-                                              //       horizontal: 0),
-                                              //   color: Colors.black
-                                              //       .withOpacity(0.5),
-                                              // ),
-                                              Positioned(
-                                                right: 30,
-                                                top: 20,
-                                                child: Row(
-                                                  children: [
-                                                    Icon(Icons.favorite,
-                                                        color: Colors.white,
-                                                        size: 25),
-                                                    Text(
-                                                      f
-                                                          .format(i['loves'])
-                                                          .toString(),
-                                                      style: TextStyle(
-                                                          color: Colors.white
-                                                              .withOpacity(0.7),
-                                                          fontSize: 16,
-                                                          fontWeight:
-                                                              FontWeight.w600),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              Positioned(
-                                                right: 30,
-                                                top: 20,
-                                                child: Row(
-                                                  children: [
-                                                    Icon(Icons.favorite,
-                                                        color: Colors.white,
-                                                        size: 25),
-                                                    Text(
-                                                      f
-                                                          .format(i['loves'])
-                                                          .toString(),
-                                                      style: TextStyle(
-                                                          color: Colors.white
-                                                              .withOpacity(0.7),
-                                                          fontSize: 16,
-                                                          fontWeight:
-                                                              FontWeight.w600),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              Positioned(
-                                                top: 50,
-                                                left: w * 0.05,
-                                                width: w * 0.8,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.9,
+                                      margin:
+                                          EdgeInsets.symmetric(horizontal: 0),
+                                      child: InkWell(
+                                        child: Stack(
+                                          children: [
+                                            CachedNetworkImage(
+                                              imageUrl: i['cover'],
+                                              imageBuilder:
+                                                  (context, imageProvider) =>
+                                                      Hero(
+                                                tag: i['timestamp'],
                                                 child: Container(
-                                                  constraints: BoxConstraints(
-                                                    maxWidth: w,
-                                                  ),
-                                                  child: Text(
-                                                    i['name'].toUpperCase(),
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 25,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
+                                                  margin: EdgeInsets.only(
+                                                      left: 10,
+                                                      right: 10,
+                                                      top: 10,
+                                                      bottom: 50),
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.grey[200],
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20),
+                                                      boxShadow: <BoxShadow>[
+                                                        BoxShadow(
+                                                            color:
+                                                                Colors.black45,
+                                                            blurRadius: 20,
+                                                            offset:
+                                                                Offset(5, 30))
+                                                      ],
+                                                      image: DecorationImage(
+                                                          image: imageProvider,
+                                                          fit: BoxFit.cover)),
+                                                  child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 10,
+                                                              bottom: 20),
+                                                      child: Row(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .end,
+                                                        children: <Widget>[
+                                                          Expanded(
+                                                            flex: 9,
+                                                            child: Column(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .end,
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: <
+                                                                  Widget>[
+                                                                Text(
+                                                                  '#' +
+                                                                      i['ownerName'],
+                                                                  style: TextStyle(
+                                                                      decoration: TextDecoration.none,
+                                                                      background: Paint()
+                                                                        ..strokeWidth =
+                                                                            8.0
+                                                                        ..color = Colors
+                                                                            .black
+                                                                            .withOpacity(0.5)
+                                                                        ..style =
+                                                                            PaintingStyle.fill
+                                                                        ..strokeJoin = StrokeJoin.round,
+                                                                      fontSize: 14),
+                                                                ),
+                                                                Container(
+                                                                  constraints:
+                                                                      BoxConstraints(
+                                                                    maxHeight:
+                                                                        95.0,
+                                                                  ),
+                                                                  child: Wrap(
+                                                                    clipBehavior:
+                                                                        Clip.antiAliasWithSaveLayer,
+                                                                    children: List<
+                                                                            Widget>.generate(
+                                                                        categories
+                                                                            .length,
+                                                                        (int
+                                                                            index) {
+                                                                      return Transform(
+                                                                        transform: new Matrix4
+                                                                            .identity()
+                                                                          ..scale(
+                                                                              0.8),
+                                                                        child:
+                                                                            Chip(
+                                                                          elevation:
+                                                                              6.0,
+                                                                          padding: EdgeInsets.symmetric(
+                                                                              vertical: 2,
+                                                                              horizontal: 2),
+                                                                          shape:
+                                                                              StadiumBorder(
+                                                                            side: BorderSide(
+                                                                                color: Color.fromARGB(
+                                                                                  rand.nextInt(150),
+                                                                                  rand.nextInt(255),
+                                                                                  rand.nextInt(255),
+                                                                                  rand.nextInt(255),
+                                                                                ),
+                                                                                style: BorderStyle.solid,
+                                                                                width: 1.2),
+                                                                          ),
+                                                                          backgroundColor:
+                                                                              Colors.white,
+                                                                          label:
+                                                                              Text(
+                                                                            categories[index],
+                                                                            style: TextStyle(
+                                                                                fontSize: 18.0,
+                                                                                color: Colors.black45,
+                                                                                letterSpacing: 2.0,
+                                                                                fontWeight: FontWeight.w300),
+                                                                          ),
+                                                                        ),
+                                                                      );
+                                                                    }),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      )),
                                                 ),
                                               ),
-                                            ],
-                                          ),
-                                          onTap: () {},
-                                        ));
+                                              placeholder: (context, url) =>
+                                                  LoadingWidget(),
+                                              errorWidget:
+                                                  (context, url, error) => Icon(
+                                                Icons.error,
+                                                size: 40,
+                                              ),
+                                            ),
+                                            //  Container(
+                                            //   height: h * 0.70,
+                                            //   width: MediaQuery.of(context)
+                                            //           .size
+                                            //           .width *
+                                            //       0.9,
+                                            //   margin: EdgeInsets.symmetric(
+                                            //       horizontal: 0),
+                                            //   color: Colors.black
+                                            //       .withOpacity(0.5),
+                                            // ),
+                                            Positioned(
+                                              right: 30,
+                                              top: 20,
+                                              child: Row(
+                                                children: [
+                                                  Icon(Icons.favorite,
+                                                      color: Colors.white,
+                                                      size: 25),
+                                                  Text(
+                                                    f
+                                                        .format(i['loves'])
+                                                        .toString(),
+                                                    style: TextStyle(
+                                                        color: Colors.white
+                                                            .withOpacity(0.7),
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.w600),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Positioned(
+                                              right: 30,
+                                              top: 20,
+                                              child: Row(
+                                                children: [
+                                                  Icon(Icons.favorite,
+                                                      color: Colors.white,
+                                                      size: 25),
+                                                  Text(
+                                                    f
+                                                        .format(i['loves'])
+                                                        .toString(),
+                                                    style: TextStyle(
+                                                        color: Colors.white
+                                                            .withOpacity(0.7),
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.w600),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Positioned(
+                                              top: 50,
+                                              left: w * 0.05,
+                                              width: w * 0.8,
+                                              child: Container(
+                                                constraints: BoxConstraints(
+                                                  maxWidth: w,
+                                                ),
+                                                child: Text(
+                                                  i['name'].toUpperCase(),
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      // color: Colors.white,
+                                                      color: i['titleColor'] !=
+                                                                  null ||
+                                                              i['titleColor'] <
+                                                                  1
+                                                          ? Color(i[
+                                                                  'titleColor'])
+                                                              .withOpacity(1)
+                                                          : Colors.white,
+                                                      fontSize: 25,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) => Recipe(
+                                                        id: id,
+                                                      )));
+                                        },
+                                      ),
+                                    );
                                   },
                                 );
                               }).toList(),

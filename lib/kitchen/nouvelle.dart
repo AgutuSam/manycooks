@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:manycooks/extras/genres.dart';
 import 'package:manycooks/widgets/drawer.dart';
@@ -34,6 +35,40 @@ class _NouvelleState extends State<Nouvelle> {
   // Image Picker
   // List<File> _images = [];
   late File _image; // Used only if you need a single picture
+
+  // create some values
+  Color pickerColor = Color(0xff443a49);
+  Color currentColor = Color(0xff443a49);
+  Color pickerButtonColor = Colors.white;
+  Color pickerBrushColor = Colors.blueGrey;
+
+// ValueChanged<Color> callback
+  void changeColor(Color color) {
+    getOppColor(color);
+    setState(() => pickerButtonColor = color);
+  }
+
+  getOppColor(Color color) {
+    int r = 0;
+    int g = 0;
+    int b = 0;
+
+// Counting the perceptive luminance - human eye favors green color...
+    double luminance =
+        (0.299 * color.red + 0.587 * color.green + 0.114 * color.blue) / 255;
+
+    if (luminance > 0.5) {
+      r = 96; // bright colors - black font
+      g = 125; // bright colors - black font
+      b = 139; // bright colors - black font
+    } else {
+      r = 255; // dark colors - white font
+      g = 255; // dark colors - white font
+      b = 255; // dark colors - white font
+    }
+
+    setState(() => pickerBrushColor = Color.fromARGB(color.alpha, r, g, b));
+  }
 
   Future getImage(bool gallery) async {
     ImagePicker picker = ImagePicker();
@@ -88,6 +123,7 @@ class _NouvelleState extends State<Nouvelle> {
     var data = {
       'categories': categoriesMap,
       'name': metaData['title'],
+      'titleColor': pickerButtonColor.value,
       'ownerName': user.name,
       'owner': user.uid,
       'timestamp': FieldValue.serverTimestamp(),
@@ -140,9 +176,7 @@ class _NouvelleState extends State<Nouvelle> {
                         image: DecorationImage(
                             image: _image.existsSync()
                                 ? Image.file(_image).image
-                                : Image.network(
-                                        'https://images.pexels.com/photos/11493110/pexels-photo-11493110.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500')
-                                    .image,
+                                : Image.asset('assets/defaultcover.jpg').image,
                             fit: BoxFit.cover)),
                   ),
                   Container(
@@ -224,16 +258,77 @@ class _NouvelleState extends State<Nouvelle> {
               SizedBox(
                 height: 8,
               ),
-              InputCard(
-                'Title',
-                (val) {
-                  setState(() {
-                    metaData['title'] = title.text;
-                  });
-                  return val;
-                },
-                inputController: title,
-                isIcon: Icon(Icons.title).icon,
+              Row(
+                children: <Widget>[
+                  Container(
+                    width: w * 0.6,
+                    child: InputCard(
+                      'Title',
+                      (val) {
+                        setState(() {
+                          metaData['title'] = title.text;
+                        });
+                        return val;
+                      },
+                      inputController: title,
+                      isIcon: Icon(Icons.title).icon,
+                    ),
+                  ),
+                  Container(
+                      margin: EdgeInsets.only(right: 20, top: 10),
+                      width: w * 0.2,
+                      child: IconButton(
+                        onPressed: () {
+                          // raise the [showDialog] widget
+                          showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Text('Pick a color!'),
+                                  content: SingleChildScrollView(
+                                    child: ColorPicker(
+                                      pickerColor: pickerColor,
+                                      onColorChanged: changeColor,
+                                    ),
+                                    // Use Material color picker:
+                                    //
+                                    // child: MaterialPicker(
+                                    //   pickerColor: pickerColor,
+                                    //   onColorChanged: changeColor,
+                                    //   showLabel: true, // only on portrait mode
+                                    // ),
+                                    //
+                                    // Use Block color picker:
+                                    //
+                                    // child: BlockPicker(
+                                    //   pickerColor: currentColor,
+                                    //   onColorChanged: changeColor,
+                                    // ),
+                                    //
+                                    // child: MultipleChoiceBlockPicker(
+                                    //   pickerColors: currentColors,
+                                    //   onColorsChanged: changeColors,
+                                    // ),
+                                  ),
+                                  actions: <Widget>[
+                                    ElevatedButton(
+                                      child: const Text('Got it'),
+                                      onPressed: () {
+                                        setState(
+                                            () => currentColor = pickerColor);
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                );
+                              });
+                        },
+                        icon: Icon(Icons.brush, color: pickerBrushColor),
+                        tooltip: 'Title Color',
+                        color: pickerButtonColor,
+                      ))
+                ],
               ),
               SizedBox(
                 height: 8,

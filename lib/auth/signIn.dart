@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:manycooks/text/text_editor.dart';
+import 'package:manycooks/text/cook.dart';
+// import 'package:manycooks/text/text_editor.dart';
 import 'package:provider/provider.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:rounded_loading_button/rounded_loading_button.dart';
@@ -29,7 +30,7 @@ class _SignInPageState extends State<SignInPage> {
     await sb.setGuestUser();
     // ignore: unnecessary_null_comparison
     if (widget.closeDialog == null || widget.closeDialog == false) {
-      nextScreenCloseOthers(context, TextEditor());
+      nextScreenCloseOthers(context, EditorPage(chapterName: 'Guest Chapter'));
     } else {
       Navigator.pop(context);
     }
@@ -79,7 +80,8 @@ class _SignInPageState extends State<SignInPage> {
   handleAfterSignupGoogle() {
     Future.delayed(Duration(milliseconds: 1000)).then((f) {
       if (widget.closeDialog == null || widget.closeDialog == false) {
-        nextScreenCloseOthers(context, TextEditor());
+        nextScreenCloseOthers(
+            context, EditorPage(chapterName: 'Guest Chapter'));
       } else {
         Navigator.pop(context);
       }

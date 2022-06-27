@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:manycooks/text/text_field.dart';
+import 'package:manycooks/textold/text_field.dart';
 
 class EditorProvider extends ChangeNotifier {
   List<FocusNode> _nodes = [];
@@ -12,7 +12,7 @@ class EditorProvider extends ChangeNotifier {
     insert(index: 0);
   }
 
-set theTypes(List<SmartTextType> types) {
+  set theTypes(List<SmartTextType> types) {
     _types = types;
   }
 
